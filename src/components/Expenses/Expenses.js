@@ -9,8 +9,13 @@ export default function Expenses(props) {
 
   const getFilterYear = (yearData) => {
     setSelectedYear(yearData);
-    console.log(selectedYear);
   };
+
+  const filteredExpenses = props.items.filter((expense) => {
+    return expense.date.getFullYear().toString() === selectedYear;
+  });
+
+  let expensesContent = <p>No expenses found.</p>;
 
   return (
     <div>
@@ -19,15 +24,16 @@ export default function Expenses(props) {
           selected={selectedYear}
           onGetFilterYear={getFilterYear}
         />
-
-        {props.items.map((expense) => (
-          <ExpenseItem
-            key={expense.id}
-            title={expense.title}
-            amount={expense.amount}
-            date={expense.date}
-          />
-        ))}
+        {filteredExpenses === 0 && { expensesContent }}
+        {filteredExpenses.length < 0 &&
+          filteredExpenses.map((expense) => (
+            <ExpenseItem
+              key={expense.id}
+              title={expense.title}
+              amount={expense.amount}
+              date={expense.date}
+            />
+          ))}
       </Card>
     </div>
   );
